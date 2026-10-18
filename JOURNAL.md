@@ -1,6 +1,6 @@
 # Journal de bord
 
-**Temps passé :**  Mes heures sont étalées du lundi 12 au dimanche 18 octobre, à côté de mes cours de Master 2.
+**Temps passé :** Mes heures sont étalées du lundi 12 au dimanche 18 octobre, à côté de mes cours de Master 2. 
 
 ## Dans quel ordre j'ai travaillé
 1. **lundi 12 au 13 :** lecture de l'énoncé et de `daisy-api.md`, choix du sujet B, puis squelette du widget (Preact + Vite) et première construction du fichier `v1.js`. 

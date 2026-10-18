@@ -56,6 +56,15 @@ Le widget appelle par défaut l'API sur le même domaine que celui d'où vient `
 
 **Le widget** (`widget/`, construit dans `public/v1.js`) : un seul fichier de 26,8 kB, soit environ 11 kB compressé en gzip. Il se monte dans `<div id="daisy-booking">` et se charge avec une simple balise `<script>`.
 
+**Intégration chez l'artisan** (les deux lignes à coller dans la page) :
+
+```html
+<div id="daisy-booking" data-studio="std_pk_7f2a9c"></div>
+<script src="https://daisy-widget-fawn.vercel.app/v1.js" async></script>
+```
+
+`data-studio` fait partie du code prévu pour la vraie API ; mon widget ne le lit pas (voir section 5). Le `<div>` doit être placé avant le `<script>`.
+
 **États gérés** (dans `widget/src/App.tsx`) :
 
 - Démarrage : chargement ; erreur avec bouton « Réessayer ».
@@ -144,6 +153,7 @@ J'ai choisi de traiter d'abord ce qui peut faire perdre de l'argent ou la confia
 - Le widget est seulement en français, avec les prix au format fr-FR.
 - Les erreurs `slot_not_found` et `invalid_json` affichent le message d'incertitude, alors que ce sont des refus certains. Je les ai laissées comme ça faute de temps.
 - Il doit être chargé avec une balise `<script>` classique (pas `type="module"`), car je lis `document.currentScript` pour trouver l'adresse de l'API. Sinon, on passe `data-api`.
+- L'écran des créneaux affiche la description complète du cours, sans la raccourcir.
 
 **Ce que je n'ai pas testé**
 - Je n'ai testé le widget que sur mes deux pages (une normale, une avec du CSS hostile), pas sur un vrai Wix, Squarespace ou WordPress.
@@ -156,7 +166,11 @@ J'ai choisi de traiter d'abord ce qui peut faire perdre de l'argent ou la confia
 **Les limites de mon API de test**
 - Les données sont gardées en mémoire. Elles reviennent à l'état de départ quand le serveur redémarre, et sur Vercel ça peut arriver sans prévenir. `/api/mock/reset` les remet aussi à zéro.
 - `/api/mock/reset` et `/api/mock/fail` sont en GET pour pouvoir les lancer depuis la barre d'adresse. Dans une vraie API, ce serait du POST.
+
+- `/api/mock/reset` remet les places à zéro mais ne supprime pas une panne déjà armée avec `/api/mock/fail?mode=…`. Pour l'effacer, il faut appeler `/api/mock/fail` sans `mode`.
+
 - Les images des cours sont volontairement absentes ou cassées, pour montrer que le widget affiche une pastille avec l'initiale à la place.
+- Les créneaux passés de la journée ne sont pas filtrés : `from` correspond à minuit UTC du jour même.
 
 **Pas implémenté, seulement décrit dans la section 4**
 - Le contrôle du contraste de la couleur de l'atelier, la liste des polices autorisées et les événements pour mesurer l'abandon du parcours.
